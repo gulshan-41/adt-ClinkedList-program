@@ -6,7 +6,6 @@
 
 // Structure that contains a data variable & two pointers variables of it's own type. (NODE)
 struct node {
-    struct node *linkP;
     int data;
     struct node *linkN;
 };
@@ -14,10 +13,12 @@ struct node {
 /* head node (short for headN) globally declared to reduce the number of parametes, 
 ++accessibility across program. */
 struct node *headN = NULL;
+struct node *tail = NULL;
 int nodeCounter = 1;
 
 // Insertion choice screen & function.
 void insertion();
+void atBeginning();
 
 void welcomeScreen();       // Introduction to main page & choice screen.
 void screenCleaner();       // Clear the console & input buffer.
@@ -81,7 +82,7 @@ void insertion() {
             scanf("%d", &(headN->data));
 
             headN->linkN = NULL;
-            headN->linkN = NULL;
+            tail = headN;
         }
     }
     
@@ -94,11 +95,43 @@ label2:
     printf("> 1. At the beginning.\n");
     printf("> 2. At the end.\n");
     printf("> 3. At a specific position.\n");
-    printf("> 6. Exit from this section.\n\n");
+    printf("> 4. Exit from this section.\n\n");
 
     printf("Enter your choice: ");
     scanf("%d", &choice1);
 
+    switch(choice1) {
+        case 1:
+            atBeginning();
+            break;
+        case 4:
+            welcomeScreen();
+            break;
+        default:
+            printf("\nError! choose from the given options.");
+            printf("\nPress any key to continue...");
+            getch();
+            goto label2;
+    }
+
+}
+
+// Insert a node at the beginning of the list.
+void atBeginning() {
+    struct node *newNode = malloc(sizeof(struct node));
+    if (!newNode) {
+        printf("\nError: Memory allocation failed!.\n");
+        exit(1);
+    }
+
+    printf("\nnewNode->data: ");
+    scanf("%d", &(newNode->data));
+
+    newNode->linkN = headN;
+    headN = newNode;
+    tail->linkN = headN;
+
+    nodeCounter++;
 }
 
 // Screen cleaner function.
