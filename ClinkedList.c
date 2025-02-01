@@ -24,6 +24,9 @@ void atEnd();
 void welcomeScreen();       // Introduction to main page & choice screen.
 void screenCleaner();       // Clear the console & input buffer.
 
+void printL();
+void tryAgain(int );
+
 // Driver code.
 void main () {
     welcomeScreen();
@@ -123,10 +126,12 @@ label2:
         case 1:
             atBeginning();
             printL();
+            tryAgain(1);
             break;
         case 2:
             atEnd();
             printL();
+            tryAgain(1);
             break;
         case 4:
             welcomeScreen();
@@ -172,13 +177,41 @@ void atEnd() {
     struct node *end = headN;
     newNode->linkN = NULL;
             
-    while(end->linkN != NULL) {
+    for(int i = 1; i < nodeCounter; i++) {
         end = end->linkN;
     }
     end->linkN = newNode;
     newNode->linkN = tail;
 
     nodeCounter++;
+}
+
+// Try again program.
+void tryAgain(int choice) {
+    char ch;
+
+    printf("\nDo you want to try again[y/N]: ");
+    scanf(" %c", &ch);
+
+    switch(ch) {
+        case 'y':
+        case 'Y':
+            if(choice == 1) {
+                insertion();
+            } /* else {
+                deletion();
+            } */
+            break;
+        case 'n':
+        case 'N':
+            welcomeScreen();
+            break;
+        default:
+            printf("\nError: invalid input. \n");
+            printf("Press any key to continue... \n");
+            getch();
+            welcomeScreen();
+    }
 }
 
 // Screen cleaner function.
