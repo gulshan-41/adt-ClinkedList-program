@@ -19,6 +19,7 @@ int nodeCounter = 1;
 // Insertion choice screen & function.
 void insertion();
 void atBeginning();
+void atEnd();
 
 void welcomeScreen();       // Introduction to main page & choice screen.
 void screenCleaner();       // Clear the console & input buffer.
@@ -104,6 +105,9 @@ label2:
         case 1:
             atBeginning();
             break;
+        case 2:
+            atEnd();
+            break;
         case 4:
             welcomeScreen();
             break;
@@ -130,6 +134,29 @@ void atBeginning() {
     newNode->linkN = headN;
     headN = newNode;
     tail->linkN = headN;
+
+    nodeCounter++;
+}
+
+// Insert a node at the end of the list.
+void atEnd() {
+    struct node *newNode = malloc(sizeof(struct node));
+    if (!newNode) {
+        printf("\nError: Memory allocation failed!.\n");
+        exit(1);
+    }
+
+    printf("\nnewNode->data: ");
+    scanf("%d", &(newNode->data));
+
+    struct node *end = headN;
+    newNode->linkN = NULL;
+            
+    while(end->linkN != NULL) {
+        end = end->linkN;
+    }
+    end->linkN = newNode;
+    newNode->linkN = tail;
 
     nodeCounter++;
 }
