@@ -69,6 +69,24 @@ label1:
     }
 }
 
+// Traverse through and print the list.
+void printL() {
+    struct node *p = NULL;
+    p = headN;
+    
+    if(headN == NULL) {
+        printf("Alert: the list is empty!\n");
+        return;
+    }
+
+    printf("\nThe List: ");
+    for(int i = 1; i <= nodeCounter; i++) {
+        printf("| %d |", p->data);
+        p = p->linkN;
+    }
+    printf("\n");
+}
+
 void insertion() {
     screenCleaner();
     if(headN == NULL) {
@@ -104,9 +122,11 @@ label2:
     switch(choice1) {
         case 1:
             atBeginning();
+            printL();
             break;
         case 2:
             atEnd();
+            printL();
             break;
         case 4:
             welcomeScreen();
