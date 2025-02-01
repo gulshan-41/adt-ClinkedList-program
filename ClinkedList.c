@@ -20,6 +20,7 @@ int nodeCounter = 1;
 void insertion();
 void atBeginning();
 void atEnd();
+void atASpecificPosition();
 
 void welcomeScreen();       // Introduction to main page & choice screen.
 void screenCleaner();       // Clear the console & input buffer.
@@ -133,6 +134,11 @@ label2:
             printL();
             tryAgain(1);
             break;
+        case 3:
+            atASpecificPosition();
+            printL();
+            tryAgain(1);
+            break;
         case 4:
             welcomeScreen();
             break;
@@ -182,6 +188,45 @@ void atEnd() {
     }
     end->linkN = newNode;
     newNode->linkN = tail;
+
+    nodeCounter++;
+}
+
+// Insert a node at a specific position. (specified by it's serial no.)
+void atASpecificPosition() {
+    int index;
+
+    struct node *newNode = malloc(sizeof(struct node));
+    if (!newNode) {
+        printf("\nError: Memory allocation failed!.\n");
+        exit(1);
+    } else {
+        printf("\nnewNode->data: ");
+        scanf("%d", &(newNode->data));
+        newNode->linkN = NULL;
+        printf("serial: ");
+        scanf("%d", &index);
+
+        struct node *p = headN;
+
+        // The serial number should be between the list, or at the end.
+        if(index > nodeCounter + 1 || index < 1) {
+            printf("\nError: Enter a valid serial number.");
+            printf("\nPress any key to continue...");
+            getch();
+            insertion();
+        } else if(index == 1) {
+            newNode->linkN = headN;
+            headN = newNode;
+        } else {
+            index = index - 1;
+            for(int i = 1; i < index; i++) {
+                p = p->linkN;
+            }
+            newNode->linkN = p->linkN;
+            p->linkN = newNode;
+        }
+    }
 
     nodeCounter++;
 }
