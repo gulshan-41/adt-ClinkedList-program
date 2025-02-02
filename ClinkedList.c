@@ -22,6 +22,10 @@ void atBeginning();
 void atEnd();
 void atASpecificPosition();
 
+// Deletion choice screen & function.
+void deletion();
+void firstNode();
+
 void welcomeScreen();       // Introduction to main page & choice screen.
 void screenCleaner();       // Clear the console & input buffer.
 
@@ -61,6 +65,9 @@ label1:
     switch(choice) {
         case 1:
             insertion();
+            break;
+        case 2:
+            deletion();
             break;
         case 7:
             exit(0);
@@ -271,6 +278,18 @@ label3:
             goto label3;
     }
 
+}
+
+// Deletes the first node from the list.
+void firstNode() {
+    struct node *p = headN;
+    headN = (headN)->linkN;
+    tail = headN;
+        
+    free(p);
+    p = NULL;
+
+    nodeCounter--;
 }
 
 // Try again program.
