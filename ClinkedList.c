@@ -25,6 +25,7 @@ void atASpecificPosition();
 // Deletion choice screen & function.
 void deletion();
 void firstNode();
+void lastNode();
 
 void welcomeScreen();       // Introduction to main page & choice screen.
 void screenCleaner();       // Clear the console & input buffer.
@@ -268,6 +269,11 @@ label3:
             printL();
             tryAgain(2);
             break;
+        case 2: 
+            lastNode();
+            printL();
+            tryAgain(2);
+            break;
         case 4:
             welcomeScreen();
             break;
@@ -288,6 +294,28 @@ void firstNode() {
         
     free(p);
     p = NULL;
+
+    nodeCounter--;
+}
+
+// Deletes the last node from the list.
+void lastNode() {
+    if((headN)->linkN == tail) {
+        free(headN);
+        headN = NULL;
+    } else {
+        struct node *p1 = headN;
+        struct node *p2 = NULL;
+
+        for(int i = 1; i < nodeCounter; i++) {
+            p2 = p1;
+            p1 = p1->linkN;
+        }
+        p2->linkN = tail;
+
+        free(p1);
+        p1 = NULL;
+    }
 
     nodeCounter--;
 }
