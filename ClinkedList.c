@@ -14,7 +14,7 @@ struct node {
 ++accessibility across program. */
 struct node *headN = NULL;
 struct node *tail = NULL;
-int nodeCounter = 1;
+int nodeCounter = 0;
 
 // Insertion choice screen & function.
 void insertion();
@@ -26,6 +26,7 @@ void atASpecificPosition();
 void deletion();
 void firstNode();
 void lastNode();
+void specificNode();
 
 void welcomeScreen();       // Introduction to main page & choice screen.
 void screenCleaner();       // Clear the console & input buffer.
@@ -114,6 +115,8 @@ void insertion() {
 
             headN->linkN = NULL;
             tail = headN;
+
+            nodeCounter++;
         }
     }
     
@@ -172,7 +175,7 @@ void atBeginning() {
 
     newNode->linkN = headN;
     headN = newNode;
-    tail->linkN = headN;
+    tail = headN;
 
     nodeCounter++;
 }
@@ -226,9 +229,9 @@ void atASpecificPosition() {
         } else if(index == 1) {
             newNode->linkN = headN;
             headN = newNode;
+            tail = headN;
         } else {
-            index = index - 1;
-            for(int i = 1; i < index; i++) {
+            for(int i = 1; i < index - 1; i++) {
                 p = p->linkN;
             }
             newNode->linkN = p->linkN;
@@ -274,6 +277,11 @@ label3:
             printL();
             tryAgain(2);
             break;
+        case 3:
+            specificNode();
+            printL();
+            tryAgain(2);
+            break;
         case 4:
             welcomeScreen();
             break;
@@ -288,12 +296,20 @@ label3:
 
 // Deletes the first node from the list.
 void firstNode() {
-    struct node *p = headN;
-    headN = (headN)->linkN;
-    tail = headN;
+    if(nodeCounter == 1) {
+        headN->linkN = NULL;
         
-    free(p);
-    p = NULL;
+        free(headN);
+        headN = NULL;
+
+    } else {
+        struct node *p = headN;
+        headN = (headN)->linkN;
+        tail = headN;
+        
+        free(p);
+        p = NULL;
+    }
 
     nodeCounter--;
 }
@@ -312,6 +328,57 @@ void lastNode() {
             p1 = p1->linkN;
         }
         p2->linkN = tail;
+
+        free(p1);
+        p1 = NULL;
+    }
+
+    nodeCounter--;
+}
+
+// Deletes a specific node, specified by it's serial number.
+void specificNode() {
+    int index;
+    struct node *p1 = headN;
+    struct node *p2 = NULL;
+
+    printf("\nserial no.: ");
+    scanf("%d", &index);
+
+    if(index >= nodeCounter + 1 || index < 1) {
+        printf("\nError: Enter a valid serial number.");
+        printf("\nPress any key to continue...");
+        getch();
+        deletion();
+    } else if(index == 1 && nodeCounter == 1) {
+        headN->linkN = NULL;
+        
+        free(headN);
+        headN = NULL;
+
+    } else if(index == 1) {
+        headN = (headN)->linkN;
+        tail = headN;
+        
+        free(p1);
+        p1 = NULL;
+
+    } else if(index == nodeCounter) {
+        for(int i = 1; i < index; i++) {
+            p2 = p1;
+            p1 = p1->linkN;
+        }
+        p2->linkN = tail;
+
+        free(p1);
+        p1 = NULL;
+
+    } else {
+        for(int i = 1; i < index; i++) {
+            p2 = p1;
+            p1 = p1->linkN;
+        }
+        p2->linkN = p1->linkN;
 
         free(p1);
         p1 = NULL;
