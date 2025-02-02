@@ -231,6 +231,48 @@ void atASpecificPosition() {
     nodeCounter++;
 }
 
+// Deletion function and it's operations.
+void deletion() {
+    screenCleaner();
+
+    if(headN == NULL) {
+        printf("\nAlert: The list is empty.\n");
+        printf("Press any key to continue...");
+        getch();
+        welcomeScreen();
+    }
+
+    int choice2;
+
+label3:
+    screenCleaner();
+    printf("-- Deletion.\n\n");
+    printf("Options: \n");
+    printf("> 1. First node.\n");
+    printf("> 2. Last node.\n");
+    printf("> 3. A specific node.\n");
+    printf("> 4. Exit from this section.\n\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice2);
+
+    switch(choice2) {
+        case 1:
+            firstNode();
+            printL();
+            tryAgain(2);
+            break;
+        case 4:
+            welcomeScreen();
+            break;
+        default:
+            printf("\nError! choose from the given options.");
+            printf("\nPress any key to continue...");
+            getch();
+            goto label3;
+    }
+
+}
+
 // Try again program.
 void tryAgain(int choice) {
     char ch;
@@ -243,9 +285,9 @@ void tryAgain(int choice) {
         case 'Y':
             if(choice == 1) {
                 insertion();
-            } /* else {
+            } else {
                 deletion();
-            } */
+            }
             break;
         case 'n':
         case 'N':
