@@ -30,6 +30,9 @@ void specificNode();
 
 void search();
 
+void update();
+int verification(int , int );
+
 void welcomeScreen();       // Introduction to main page & choice screen.
 void screenCleaner();       // Clear the console & input buffer.
 
@@ -76,6 +79,9 @@ label1:
             break;
         case 3:
             search();
+            break;
+        case 4:
+            update();
             break;
         case 8:
             exit(0);
@@ -433,6 +439,90 @@ void search(){
     switch(choice) {
         case 1:
             search();
+            break;
+        case 2:
+            welcomeScreen();
+            break;
+        default:
+            printf("\nError: Choose from the given options.");
+            printf("\nPress any key to continue...");
+            getch();
+            welcomeScreen();
+    }
+}
+
+int verification(int index, int data) {
+    int verify = 0;
+    struct node *p = headN;
+
+    if(index >= nodeCounter + 1 || index < 1) {
+        return 4;       // error code: 4
+    } else {
+        for(int i = 1; i <= index; i++) {
+            if(p->data == data) {
+                verify++;
+                break;
+            }
+            p = p->linkN;
+        }
+    }
+
+    if(verify == 0) {
+        return 5;       // error code: 5
+    } else {
+        return 1;
+    }
+}
+
+// Update nodes with new data.
+void update() {
+    screenCleaner();
+
+    int serial, data, uData, choice, errorCode;
+
+    printf("Which node do you want to update?");
+    printL();
+
+    printf("\nserial no.: ");
+    scanf("%d", &serial);
+    printf("node's data: ");
+    scanf("%d", &data);
+
+    errorCode = verification(serial, data);
+    if(errorCode == 4) {
+        printf("\nError: Enter a valid serial number.");
+        printf("\nPress any key to continue...");
+        getch();
+        update();
+    } else if(errorCode == 5) {
+        printf("\nError: The element is not present at the\n"
+               "specified serial number. ");
+        printf("\nPress any key to continue...");
+        getch();
+        update();
+    }
+
+    printf("\nnew->data: ");
+    scanf("%d", &uData);
+
+    struct node *p = headN;
+
+    for(int i = 1; i < serial; i++) {
+        p = p->linkN;
+    }
+
+    p->data = uData;
+
+    printL();
+
+    printf("\n> 1. Continue to update more elements.\n");
+    printf("> 2. Exit from this section.\n");
+    printf("\nyour choice: ");
+    scanf("%d", &choice);
+
+    switch(choice) {
+        case 1:
+            update();
             break;
         case 2:
             welcomeScreen();
