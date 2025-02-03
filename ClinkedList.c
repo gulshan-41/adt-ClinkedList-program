@@ -28,6 +28,8 @@ void firstNode();
 void lastNode();
 void specificNode();
 
+void search();
+
 void welcomeScreen();       // Introduction to main page & choice screen.
 void screenCleaner();       // Clear the console & input buffer.
 
@@ -52,11 +54,12 @@ label1:
     printf("*Read the options carefully and choose.\n");
     printf("> 1. Insertion.\n");
     printf("> 2. Deletion.\n");
-    printf("> 3. Update.\n");
-    printf("> 4. Search.\n");
+    printf("> 3. Search.\n");
+    printf("> 4. Update.\n");
     printf("> 5. Sort.\n");
     printf("> 6. Reverse.\n");
-    printf("> 7. Exit the program.\n\n");
+    printf("> 7. Removing duplicates.\n");
+    printf("> 8. Exit the program.\n\n");
 
     printf("*NOTE: Before choosing options like deletion, search,\n"
            "reverse,. must insert enough elements.\n\n");
@@ -71,7 +74,10 @@ label1:
         case 2:
             deletion();
             break;
-        case 7:
+        case 3:
+            search();
+            break;
+        case 8:
             exit(0);
             break;
         default:
@@ -385,6 +391,58 @@ void specificNode() {
     }
 
     nodeCounter--;
+}
+
+// Search a specific node, taking reference it's data & returns it's serial number.
+void search(){
+    screenCleaner();
+
+    int target, i, flag = 0, choice;
+
+    if(headN == NULL) {
+        printf("\nError: The list is empty.\n");
+        printf("Press any key to continue...");
+        getch();
+        welcomeScreen();
+    }
+
+    printL();
+
+    printf("\nelement: ");
+    scanf("%d", &target);
+
+    struct node *p = headN;
+
+    for(i = 1; i <= nodeCounter; i++) {
+        if(target == p->data) {
+            flag++;
+            printf("\nserial no.: %d", i);
+        }
+        p = p->linkN;
+    }
+
+    if(flag == 0) {
+        printf("\nelement not found!");
+    }
+
+    printf("\n\n> 1. Continue to search elements.\n");
+    printf("> 2. Exit from this section.\n");
+    printf("\nyour choice: ");
+    scanf("%d", &choice);
+
+    switch(choice) {
+        case 1:
+            search();
+            break;
+        case 2:
+            welcomeScreen();
+            break;
+        default:
+            printf("\nError: Choose from the given options.");
+            printf("\nPress any key to continue...");
+            getch();
+            welcomeScreen();
+    }
 }
 
 // Try again program.
