@@ -33,6 +33,8 @@ void search();
 void update();
 int verification(int , int );
 
+void reverse();
+
 void welcomeScreen();       // Introduction to main page & choice screen.
 void screenCleaner();       // Clear the console & input buffer.
 
@@ -82,6 +84,9 @@ label1:
             break;
         case 4:
             update();
+            break;
+        case 6:
+            reverse();
             break;
         case 8:
             exit(0);
@@ -523,6 +528,56 @@ void update() {
     switch(choice) {
         case 1:
             update();
+            break;
+        case 2:
+            welcomeScreen();
+            break;
+        default:
+            printf("\nError: Choose from the given options.");
+            printf("\nPress any key to continue...");
+            getch();
+            welcomeScreen();
+    }
+}
+
+// Reverse the list.
+void reverse() {
+    screenCleaner();
+
+    int choice;
+
+    printL();
+
+    if(headN == NULL || headN->linkN == NULL) {
+        printf("\nError: The list is empty or it has only one node!\n");
+        printf("Press any key to continue...");
+        getch();
+        welcomeScreen();
+    }
+
+    struct node *prev = tail;
+    struct node *current = headN;
+    struct node *next = NULL;
+
+    do {
+        next = current->linkN;  // Store the next node
+        current->linkN = prev;  // Reverse the link
+        prev = current;         // Move prev to current
+        current = next;         // Move current to next
+    } while (current != headN);
+
+    headN = prev;
+
+    printL();
+
+    printf("\n> 1. Reverse one more time OR.\n");
+    printf("> 2. Exit from this section.\n");
+    printf("\nyour choice: ");
+    scanf("%d", &choice);
+
+    switch(choice) {
+        case 1:
+            reverse();
             break;
         case 2:
             welcomeScreen();
