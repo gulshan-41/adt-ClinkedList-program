@@ -110,10 +110,10 @@ void printL() {
     }
 
     printf("\nThe List: ");
-    for(int i = 1; i <= nodeCounter; i++) {
+    do {
         printf("| %d |", p->data);
         p = p->linkN;
-    }
+    } while(p != headN);
     printf("\n");
 }
 
@@ -130,8 +130,8 @@ void insertion() {
             printf("\nheadN->data: ");
             scanf("%d", &(headN->data));
 
-            headN->linkN = NULL;
             tail = headN;
+            headN->linkN = headN;
 
             nodeCounter++;
         }
@@ -192,7 +192,7 @@ void atBeginning() {
 
     newNode->linkN = headN;
     headN = newNode;
-    tail = headN;
+    tail->linkN = headN;
 
     nodeCounter++;
 }
@@ -208,15 +208,10 @@ void atEnd() {
     printf("\nnewNode->data: ");
     scanf("%d", &(newNode->data));
 
-    struct node *end = headN;
-    newNode->linkN = NULL;
-            
-    for(int i = 1; i < nodeCounter; i++) {
-        end = end->linkN;
-    }
-    end->linkN = newNode;
-    newNode->linkN = tail;
-
+    newNode->linkN = headN;
+    tail->linkN = newNode;
+    tail= newNode;
+    
     nodeCounter++;
 }
 
@@ -246,7 +241,13 @@ void atASpecificPosition() {
         } else if(index == 1) {
             newNode->linkN = headN;
             headN = newNode;
-            tail = headN;
+            tail->linkN = headN;
+
+        } else if(index == nodeCounter + 1) {
+            newNode->linkN = headN;
+            tail->linkN = newNode;
+            tail= newNode;
+
         } else {
             for(int i = 1; i < index - 1; i++) {
                 p = p->linkN;
