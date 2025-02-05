@@ -319,11 +319,12 @@ void firstNode() {
         
         free(headN);
         headN = NULL;
+        tail = NULL;
 
     } else {
         struct node *p = headN;
-        headN = (headN)->linkN;
-        tail = headN;
+        headN = headN->linkN;
+        tail->linkN = headN;
         
         free(p);
         p = NULL;
@@ -334,9 +335,11 @@ void firstNode() {
 
 // Deletes the last node from the list.
 void lastNode() {
-    if((headN)->linkN == tail) {
+    if(headN == tail) {
         free(headN);
         headN = NULL;
+        tail = NULL;
+
     } else {
         struct node *p1 = headN;
         struct node *p2 = NULL;
@@ -345,7 +348,8 @@ void lastNode() {
             p2 = p1;
             p1 = p1->linkN;
         }
-        p2->linkN = tail;
+        tail = p2;
+        tail->linkN = headN;
 
         free(p1);
         p1 = NULL;
@@ -368,30 +372,35 @@ void specificNode() {
         printf("\nPress any key to continue...");
         getch();
         deletion();
-    } else if(index == 1 && nodeCounter == 1) {
-        headN->linkN = NULL;
-        
+    } 
+    // Case 1: Deleting the only node in the list.
+    else if(index == 1 && nodeCounter == 1) {
         free(headN);
         headN = NULL;
-
-    } else if(index == 1) {
-        headN = (headN)->linkN;
-        tail = headN;
+        tail = NULL;
+    } 
+    // Case 2: Deleting the first node in a multi-node list
+    else if(index == 1) {
+        headN = headN->linkN;
         
         free(p1);
         p1 = NULL;
 
-    } else if(index == nodeCounter) {
+    } 
+    // Case 3: Deleting the last node
+    else if(index == nodeCounter) {
         for(int i = 1; i < index; i++) {
             p2 = p1;
             p1 = p1->linkN;
         }
-        p2->linkN = tail;
+        p2->linkN = headN;
 
         free(p1);
         p1 = NULL;
 
-    } else {
+    } 
+    // Case 4: Deleting a node in the middle
+    else {
         for(int i = 1; i < index; i++) {
             p2 = p1;
             p1 = p1->linkN;
