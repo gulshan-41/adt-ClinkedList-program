@@ -434,13 +434,13 @@ void search(){
 
     struct node *p = headN;
 
-    for(i = 1; i <= nodeCounter; i++) {
+    do {
         if(target == p->data) {
             flag++;
             printf("\nserial no.: %d", i);
         }
         p = p->linkN;
-    }
+    } while(p != headN);
 
     if(flag == 0) {
         printf("\nelement not found!");
@@ -556,27 +556,30 @@ void reverse() {
 
     int choice;
 
-    printL();
-
     if(headN == NULL || headN->linkN == NULL) {
         printf("\nError: The list is empty or it has only one node!\n");
         printf("Press any key to continue...");
         getch();
         welcomeScreen();
+        return;
     }
+
+    printL();
 
     struct node *prev = tail;
     struct node *current = headN;
     struct node *next = NULL;
+    struct node *start = headN;
 
     do {
-        next = current->linkN;  // Store the next node
+        next = current->linkN;  // Store next node
         current->linkN = prev;  // Reverse the link
         prev = current;         // Move prev to current
         current = next;         // Move current to next
-    } while (current != headN);
+    } while (current != start);  // Traverse until full circle
 
-    headN = prev;
+    tail = headN;   
+    headN = prev;   
 
     printL();
 
