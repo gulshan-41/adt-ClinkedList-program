@@ -30,6 +30,11 @@ void specificNode();
 
 void search();
 
+void sort();
+struct node * mergeSort(struct node * );
+struct node * split(struct node * );
+struct node * merge(struct node * , struct node * );
+
 void update();
 int verification(int , int );
 
@@ -60,8 +65,8 @@ label1:
     printf("> 1. Insertion.\n");
     printf("> 2. Deletion.\n");
     printf("> 3. Search.\n");
-    printf("> 4. Update.\n");
-    printf("> 5. Sort.\n");
+    printf("> 4. Sort.\n");
+    printf("> 5. Upadate.\n");
     printf("> 6. Reverse.\n");
     printf("> 7. Removing duplicates.\n");
     printf("> 8. Exit the program.\n\n");
@@ -83,6 +88,9 @@ label1:
             search();
             break;
         case 4:
+            sort();
+            break;
+        case 5:
             update();
             break;
         case 6:
@@ -489,6 +497,85 @@ int verification(int index, int data) {
     }
 }
 
+// Sort the list using merge sort algorithm. (Backtracking!)
+void sort() {
+    screenCleaner();
+
+    struct node *p = NULL;
+
+    printL();
+
+    if(headN == NULL || headN->linkN == headN) {
+        printf("\nError: The list is empty or it has only one node!\n");
+        printf("Press any key to continue...");
+        getch();
+        welcomeScreen();
+    }
+
+    // Breaking the circularity.
+    tail->linkN = NULL;
+    tail = NULL;
+
+    headN = mergeSort(headN);
+
+    // Re establishing the connection to maintain circularity.
+    p = headN;
+    while(p->linkN != NULL) {
+        p = p->linkN;
+    }
+    tail = p;
+    tail->linkN = headN;
+
+    printL();
+
+    printf("\nPress any key to continue...");
+    getch();
+    welcomeScreen();
+}
+
+struct node * mergeSort(struct node *headN) {
+
+    if (headN == NULL || headN->linkN == NULL) {
+        return headN;
+    }
+
+    struct node *second = split(headN);
+
+    headN = mergeSort(headN);
+    second = mergeSort(second);
+
+    return merge(headN, second);
+}
+
+struct node * split(struct node *headN) {
+
+    struct node *fast = headN->linkN;
+    struct node *slow = headN;
+
+    while (fast != NULL && fast->linkN != NULL) {
+        fast = fast->linkN->linkN;
+        slow = slow->linkN;
+    }
+
+    struct node *temp = slow->linkN;
+    slow->linkN = NULL;
+    return temp;
+}
+
+struct node * merge(struct node * first, struct node * second) {
+
+    if(first == NULL) return second;
+    if(second == NULL) return first;
+
+    if(first->data < second->data) {
+        first->linkN = merge(first->linkN, second);
+        return first;
+    } else {
+        second->linkN = merge(first, second->linkN);
+        return second;
+    }
+}
+
 // Update nodes with new data.
 void update() {
     screenCleaner();
@@ -572,11 +659,11 @@ void reverse() {
     struct node *start = headN;
 
     do {
-        next = current->linkN;  // Store next node
-        current->linkN = prev;  // Reverse the link
-        prev = current;         // Move prev to current
-        current = next;         // Move current to next
-    } while (current != start);  // Traverse until full circle
+        next = current->linkN;      // Store next node
+        current->linkN = prev;      // Reverse the link
+        prev = current;             // Move prev to current
+        current = next;             // Move current to next
+    } while (current != start);     // Traverse until full circle
 
     tail = headN;   
     headN = prev;   
